@@ -90,7 +90,7 @@ export const HomePage = memo(() => {
 
     return <div className="h-screen w-screen flex justify-center">
         <Header isOpen={isOpen} setOpen={setOpen}/>
-        <SideBar chat_id={chat_id} setOpen={setOpen} isOpen={isOpen}/>
+        <SideBar setMessages={setMessages} chat_id={chat_id} setOpen={setOpen} isOpen={isOpen}/>
         <div className="w-full flex items-center flex-col">
             <div className="max-w-[800px] w-full">
                 <div className="h-[calc(100vh-96px)] pt-10 md:px-3 px-2 w-full overflow-y-scroll scroll" ref={scrollRef}>
@@ -129,7 +129,7 @@ export const HomePage = memo(() => {
                     <textarea rows={2} type="text" placeholder="Enter your prompt" value={prompt} onChange={e => setPrompt(e.target.value)} onKeyDown={e => {
                         if (e.key == "Enter" && !e.shiftKey) {
                             e.preventDefault()
-                            generateResponseToPrompt({ preventDefault: () => { } })   
+                            !isThinking && generateResponseToPrompt({ preventDefault: () => { } })   
                         }
                     }} className="p-2 outline-none scroll w-full resize-none" />
                     <button className="p-2" type="submit">

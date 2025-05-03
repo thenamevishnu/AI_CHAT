@@ -6,9 +6,10 @@ import { models } from "../constants/models"
 import { setModel } from "../redux/model.slice"
 import { useNavigate } from "react-router"
 import { HiBars3BottomLeft } from "react-icons/hi2"
-import { FaEllipsisVertical } from "react-icons/fa6"
+import { IoMdTrash } from "react-icons/io"
+import { removeChats } from "../redux/chat.slice"
 
-export const SideBar = ({ isOpen, setOpen, chat_id }) => {
+export const SideBar = ({ isOpen, setMessages, setOpen, chat_id }) => {
     const { chats } = useSelector(state => state.chat)
     const { model } = useSelector(state => state.model)
     const [isModelOpen, setModelOpen] = useState(false)
@@ -34,6 +35,13 @@ export const SideBar = ({ isOpen, setOpen, chat_id }) => {
         setModelOpen(prev => !prev)
     }
 
+    const handleDeleteHistory = chatId => {
+        if (confirm("Are you sure ?")) {
+            if (chatId == chat_id) setMessages([])
+            dispatch(removeChats(chatId))
+        }
+    }
+
     return <div className={`h-screen bg-white/5 overflow-x-hidden z-1 fixed md:relative left-0 transition-all w-full ${isOpen ? "max-w-[260px]" : "max-w-0"}`}>
         <div className="h-10 flex items-center px-2"><RiExpandLeftFill className={`cursor-pointer me-2 duration-200 ${isOpen ? "rotate-0" : "rotate-180"}`} onClick={() => { setOpen(prev => !prev); setModelOpen(false) }} /> GPT</div>
         <div className="p-1 relative">
@@ -56,9 +64,9 @@ export const SideBar = ({ isOpen, setOpen, chat_id }) => {
             <div className="max-h-52 mt-2 overflow-y-auto scroll">
                 {
                     getChats().reverse().map(chat => {
-                        return <div key={chat.id} onClick={() => redirect(`/c/${chat.chat_id}`)} className="p-2 hover:bg-white/10 items-center rounded-full cursor-pointer flex justify-between">
-                            <div className="flex items-center gap-1 text-nowrap"><HiBars3BottomLeft /> {chat.content.slice(0,10)}...</div>
-                            <div><FaEllipsisVertical /></div>
+                        return <div key={chat.id} className="p-2 hover:bg-white/10 items-center rounded-full cursor-pointer flex justify-between">
+                            <div onClick={() => redirect(`/c/${chat.chat_id}`)} className="flex items-center gap-1 text-nowrap"><HiBars3BottomLeft /> {chat.content.slice(0,10)}...</div>
+                            <div onClick={() => handleDeleteHistory(chat.chat_id)}><IoMdTrash /></div>
                         </div>
                     })
                 }
