@@ -11,6 +11,7 @@ export const ai = {
             } 
             onComplete(id)
         } catch (err) {
+            console.log(err);
             return onStream("<font color='red'>No content available. Please try another prompt or switching to a different AI model.</font>", id)
         }
     }

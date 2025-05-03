@@ -50,7 +50,7 @@ export const SideBar = ({ isOpen, setMessages, setOpen, chat_id }) => {
                 <div className="bg-[#333] shadow-xl shadow-black w-full">
                     {
                         models.map(mdl => {
-                            return <div key={mdl} onClick={() => { dispatch(setModel(mdl)); handleModelOpen() }} className="p-1 truncate cursor-pointer">{mdl}</div>
+                            return <div key={mdl} onClick={() => { dispatch(setModel(mdl)); handleModelOpen(); handleNewChatOpen() }} className="p-1 truncate cursor-pointer">{mdl}</div>
                         })
                     }
                 </div>
